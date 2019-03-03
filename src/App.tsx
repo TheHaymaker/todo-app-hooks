@@ -1,28 +1,31 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import TodoForm from './components/TodoForm';
+import TodoList from './components/TodoList';
+import { Todo } from './types';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+const App = () => {
+  const initialState: Array<Todo> = [];
+  const [todos, saveTodos] = useState(initialState);
+
+  const deleteTodo = (index: number) => {
+    const items = todos;
+    items.splice(index, 1);
+    saveTodos([...items]);
+  };
+
+  const completeTodo = (index: number) => {
+    const items = todos;
+    items[index].completed = !items[index].completed;
+    saveTodos([...items]);
+  };
+  return (
+    <div className="App">
+      <h1>Todo</h1>
+      <TodoForm todos={todos} saveTodos={saveTodos} />
+      <TodoList todos={todos} deleteTodo={deleteTodo} completeTodo={completeTodo} />
+    </div>
+  );
+};
 
 export default App;
